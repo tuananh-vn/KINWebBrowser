@@ -12,7 +12,8 @@
 #import "KINWebBrowserViewController.h"
 
 #define TimeStamp [NSString stringWithFormat:@"%d",[[NSDate date] timeIntervalSince1970]];
-
+#define DEFAULT_URL @"http://test.ved.com.vn/hotro/app-auth";
+#define DEFAULT_SALT @"LinhDepTrai";
 @protocol GCVETVHelpDelegate
 
 -(void) helpOnClick;
@@ -30,9 +31,15 @@
 @property(nonatomic, strong) NSString *tokenID;
 // float window layer
 @property(nonatomic, strong) UIWindow *floatWindow;
+
+// server url
+@property(nonatomic, strong) NSString *serverURL;
+
+// extra data
+@property(nonatomic, strong) NSDictionary *extraData;
 + (id) sharedManager;
 + (id) sharedManagerForAppID: (NSString *) appid andAccessToken: (NSString *) tokenID;
-+ (id)sharedManagerForAppID: (NSString *) appid andAccessToken:(NSString *)tokenID andFrame: (CGRect) frame;
++ (id) sharedManagerForAppID: (NSString *) appid andAccessToken:(NSString *)tokenID andFrame: (CGRect) frame;
 - (void) showHelp;
 - (void) setHelpImage: (UIImage *) image;
 @end
