@@ -118,7 +118,7 @@
 #pragma Encode data
 -(NSString *) createChecksumWithData: (NSString*) data andStamp: (NSString *) stamp {
     NSString * parameters = [NSString stringWithFormat:@"%@%@", data, stamp];
-    NSString *salt = @"LinhDepTrai";
+    NSString *salt = DEFAULT_SALT;
     NSData *saltData = [salt dataUsingEncoding:NSUTF8StringEncoding];
     NSData *paramData = [parameters dataUsingEncoding:NSUTF8StringEncoding];
     NSMutableData* hash = [NSMutableData dataWithLength:CC_SHA1_DIGEST_LENGTH];
@@ -128,12 +128,13 @@
 }
 
 -(NSMutableURLRequest *) createHelpRequest {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://test.ved.com.vn/hotro/app-auth"]];
-    
-    NSString *postString;
+    NSString *defaultURL = DEFAULT_URL;
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:(self.serverURL ? _serverURL : defaultURL) ]];
     if(self.tokenID) {
-        postString = [self createHelpData];
-        NSData *postData                    = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSDictionary * postParams = [self createDictionary];
+        NSString *postString = [self convertDictionaryToString:postParams];
+        NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding];
+        
         NSString *postLength                = [NSString stringWithFormat:@"%lu", [postData length]];
         [request setHTTPMethod:@"POST"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
@@ -152,6 +153,29 @@
 //    NSString * timeStamp = TimeStamp;
     NSString * checkSum = [self createChecksumWithData: self.tokenID andStamp: timeStamp];
     return [NSString stringWithFormat:@"access_token=%@&timestamp=%@&checksum=%@",self.tokenID, timeStamp, checkSum];
+}
+
+-(NSDictionary *) createDictionary {
+    NSMutableDictionary *param;
+    if(self.extraData) {
+        param = [[NSMutableDictionary alloc] initWithDictionary:self.extraData];
+    } else {
+        param = [[NSMutableDictionary alloc] init];
+    }
+    int timestamp = (int)[[NSDate date] timeIntervalSince1970];
+    NSString * timeStamp = [NSString stringWithFormat:@"%d",timestamp];
+    NSString * checkSum = [self createChecksumWithData: self.tokenID andStamp: timeStamp];
+    [param setValue:self.tokenID forKey:@"access_token"];
+    [param setValue:timeStamp forKey:@"timestamp"];
+    [param setValue:checkSum forKey:@"checksum"];
+    return param;
+}
+
+-(NSString *) convertDictionaryToString: (NSDictionary *) params {
+    NSMutableArray *pairArray = [[NSMutableArray alloc] initWithCapacity:0];
+    for (NSString *key in params)
+        [pairArray addObject:[NSString stringWithFormat:@"%@=%@", key, params[key]]];
+    return [pairArray componentsJoinedByString:@"&"];
 }
 
 @end
