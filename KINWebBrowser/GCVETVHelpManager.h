@@ -38,8 +38,10 @@
 // extra data
 @property(nonatomic, strong) NSDictionary *extraData;
 + (id) sharedManager;
++ (id)sharedManagerWithFrame: (CGRect) frame;
 + (id) sharedManagerForAppID: (NSString *) appid andAccessToken: (NSString *) tokenID;
 + (id) sharedManagerForAppID: (NSString *) appid andAccessToken:(NSString *)tokenID andFrame: (CGRect) frame;
 - (void) showHelp;
+- (void) hideHelp;
 - (void) setHelpImage: (UIImage *) image;
 @end
