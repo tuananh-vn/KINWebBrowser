@@ -34,6 +34,18 @@
     return sharedMyManager;
 }
 
++ (id)sharedManagerWithFrame: (CGRect) frame{
+    static GCVETVHelpManager *sharedMyManager = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        sharedMyManager = [[self alloc] init];
+        sharedMyManager.appid = nil;
+        sharedMyManager.tokenID = nil;
+        [sharedMyManager initHelpManager: frame];
+    });
+    return sharedMyManager;
+}
 
 + (id)sharedManagerForAppID: (NSString *) appid andAccessToken:(NSString *)tokenID{
     static GCVETVHelpManager *sharedMyManager = nil;
@@ -70,7 +82,6 @@
     _floatController.view.backgroundColor = [UIColor clearColor];
     _floatController.delegate = self;
     self.floatWindow.rootViewController = _floatController;
-//    [self.floatWindow makeKeyAndVisible];
 }
 
 - (void) setHelpImage: (UIImage *) image{
@@ -79,6 +90,10 @@
 
 - (void) showHelp {
     [self.floatWindow makeKeyAndVisible];
+}
+
+- (void) hideHelp {
+    self.floatWindow.hidden = YES;
 }
 
 -(void) helpOnClick {
@@ -90,10 +105,6 @@
     KINWebBrowserViewController *webBrowser = [webBrowserNavigationController rootWebBrowser];
     webBrowser.delegate = self;
     [webBrowser loadRequest:[self createHelpRequest]];
-//    KINWebBrowserViewController *webBrowser = [KINWebBrowserViewController webBrowser];
-//    [mainWindow.rootViewController.navigationController pushViewController:webBrowser animated:YES];
-////    self.floatWindow.rootViewController = webBrowser;
-//    [webBrowser loadURLString:@"http://www.example.com"];
     
 }
 
