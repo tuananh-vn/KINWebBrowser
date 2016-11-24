@@ -129,7 +129,12 @@
 #pragma Encode data
 -(NSString *) createChecksumWithData: (NSString*) data andStamp: (NSString *) stamp {
     NSString * parameters = [NSString stringWithFormat:@"%@%@", data, stamp];
-    NSString *salt = DEFAULT_SALT;
+    NSString *salt;
+    if(self.salt) {
+        salt = self.salt;
+    } else {
+        salt = DEFAULT_SALT;
+    }
     NSData *saltData = [salt dataUsingEncoding:NSUTF8StringEncoding];
     NSData *paramData = [parameters dataUsingEncoding:NSUTF8StringEncoding];
     NSMutableData* hash = [NSMutableData dataWithLength:CC_SHA1_DIGEST_LENGTH];
