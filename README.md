@@ -18,6 +18,12 @@ GCVETVHelpManager *floatManager = [GCVETVHelpManager sharedManagerWithFrame:CGRe
     floatManager.serverURL = @"";
     floatManager.extraData = [[NSDictionary alloc] init];
 ```
+**Set custom salt :**
+```objective-c
+    floatManager.salt = @"";
+```
+
+
 **Set float button image:**
 ```objective-c
     [floatManager setHelpImage:[UIImage imageNamed:@""]];
