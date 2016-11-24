@@ -29,6 +29,8 @@
 @property(nonatomic, strong) NSString *appid;
 // token id from GM.
 @property(nonatomic, strong) NSString *tokenID;
+// salt 
+@property(nonatomic, strong) NSString *salt
 // float window layer
 @property(nonatomic, strong) UIWindow *floatWindow;
 
