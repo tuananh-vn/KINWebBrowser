@@ -184,6 +184,10 @@
     [param setValue:self.tokenID forKey:@"access_token"];
     [param setValue:timeStamp forKey:@"timestamp"];
     [param setValue:checkSum forKey:@"checksum"];
+    
+    if(self.redirectURL) {
+        [param setValue:self.redirectURL forKey:@"redirect_url"];
+    }
     return param;
 }
 
