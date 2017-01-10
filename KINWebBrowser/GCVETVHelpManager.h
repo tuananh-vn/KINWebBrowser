@@ -31,6 +31,8 @@
 @property(nonatomic, strong) NSString *tokenID;
 // salt 
 @property(nonatomic, strong) NSString *salt;
+// salt
+@property(nonatomic, strong) NSString *redirectURL;
 // float window layer
 @property(nonatomic, strong) UIWindow *floatWindow;
 
