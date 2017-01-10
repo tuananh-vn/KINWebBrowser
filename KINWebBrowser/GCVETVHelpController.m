@@ -37,6 +37,7 @@
 
 - (void) initView {
     CGRect helpFrame = self.view.frame;
+    helpFrame.origin = CGPointZero;
     _helpIcon = [[UIImageView alloc] initWithFrame:helpFrame];
     _helpIcon.contentMode = UIViewContentModeScaleAspectFit;
     _helpIcon.image = [UIImage imageNamed:@"ic_help"];
